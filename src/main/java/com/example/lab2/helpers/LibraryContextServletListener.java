@@ -12,7 +12,7 @@ public class LibraryContextServletListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ArrayList<Book> books = new ArrayList<Book>();
-        for (int i=0;i<=5;i++){
+        for (int i=0;i<=2;i++){
             Book bookPom= new Book(i);
             books.add(bookPom);
         }
