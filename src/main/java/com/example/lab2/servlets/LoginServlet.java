@@ -43,17 +43,10 @@ public class LoginServlet extends HttpServlet {
         return Base64.getEncoder().encodeToString(str.getBytes());
     }
 
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("login.html");
-
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = null;
-        Response loginResponse= new ExceptionResponse("Wrong data");
+        Response loginResponse= new ExceptionResponse("Wrong data!");
         try {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
@@ -68,8 +61,8 @@ public class LoginServlet extends HttpServlet {
                 if ("admin".equals(password)) {
 
                     session.setAttribute("userLogged", loginRequest);
-                    session.setAttribute("adminFlag", true);
-
+                    response.addCookie(new Cookie("userId",getBase64FromString(login)));
+                    loginResponse = new OkResponse();
                 } else {
                     loginResponse=new BadCredentialsException();
                 }
@@ -77,8 +70,7 @@ public class LoginServlet extends HttpServlet {
                 if (checkUser(login, password)) {
                     session.setAttribute("userLogged", loginRequest);
                     response.addCookie(new Cookie("userId",getBase64FromString(login)));
-                    loginResponse = new OkResponse("");
-
+                    loginResponse = new OkResponse();
                 } else {
                     loginResponse=new BadCredentialsException();
                 }
