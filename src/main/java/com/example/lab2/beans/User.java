@@ -16,4 +16,17 @@ public class User {
         this.pass = pass;
         this.role = role;
     }
+
+    public String getUser() {
+        return login;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
 }
