@@ -31,7 +31,7 @@ public class LoginFilter implements Filter {
             if(userObj == null) {
                 throw new Exception("Unauthorized user");
             }
-            LoginRequest user = (LoginRequest) userObj;
+            User user = (User) userObj;
             if(!checkForUserIdCookie(httpRequest.getCookies(), user)) {
                 throw new Exception("No proper cookie");
             }
@@ -44,7 +44,7 @@ public class LoginFilter implements Filter {
             gson.toJson(unauthorizedResponse, response.getWriter());
         }
     }
-    private boolean checkForUserIdCookie(Cookie[] cookies, LoginRequest user) {
+    private boolean checkForUserIdCookie(Cookie[] cookies, User user) {
         for (Cookie cookie : cookies) {
             if ("userId".equals(cookie.getName())) {
                 return new String(Base64.getDecoder()

@@ -1,5 +1,7 @@
 package com.example.lab2.servlets;
 
+import com.example.lab2.beans.Role;
+import com.example.lab2.beans.User;
 import com.example.lab2.requests.LoginRequest;
 import com.example.lab2.responses.BadCredentialsException;
 import com.example.lab2.responses.ExceptionResponse;
@@ -59,8 +61,8 @@ public class LoginServlet extends HttpServlet {
 
             if ("admin".equals(login)) {
                 if ("admin".equals(password)) {
-
-                    session.setAttribute("userLogged", loginRequest);
+                    User user = new User (login,password, Role.ADMIN);
+                    session.setAttribute("userLogged", user);
                     response.addCookie(new Cookie("userId",getBase64FromString(login)));
                     loginResponse = new OkResponse();
                 } else {
@@ -68,7 +70,8 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 if (checkUser(login, password)) {
-                    session.setAttribute("userLogged", loginRequest);
+                    User user = new User (login,password);
+                    session.setAttribute("userLogged", user);
                     response.addCookie(new Cookie("userId",getBase64FromString(login)));
                     loginResponse = new OkResponse();
                 } else {

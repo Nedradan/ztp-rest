@@ -1,6 +1,8 @@
 package com.example.lab2.servlets;
 
 import com.example.lab2.beans.Book;
+import com.example.lab2.beans.Role;
+import com.example.lab2.beans.User;
 import com.example.lab2.responses.ExceptionResponse;
 import com.example.lab2.responses.GetDashboardReponse;
 import com.example.lab2.responses.OkResponse;
@@ -23,6 +25,11 @@ public class DashboardServlet extends HttpServlet {
         books = (ArrayList<Book>) context.getAttribute("books");
     }
 
+    private boolean AdminCheck(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("CurrentUser");
+        return user.getRole()== Role.ADMIN;
+    }
+
 
 
     @Override
@@ -42,6 +49,15 @@ public class DashboardServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setContentType("application/json;charset=UTF-8");
+        Gson gson = new Gson();
+        Response dashboardResponse= new OkResponse("");
+        try {
+            GetDashboardReponse res = new GetDashboardReponse(books, 200);
+            gson.toJson(res, response.getWriter());
+        } catch (Exception ex) {
+            dashboardResponse = new ExceptionResponse((ex.getLocalizedMessage()));
+            gson.toJson(dashboardResponse, response.getWriter());
+        }
     }
 }
