@@ -64,6 +64,7 @@ public class DashboardServlet extends HttpServlet {
                 gson.toJson(dashboardPostResponse, response.getWriter());
             }
             GetDashboardReponse res = new GetDashboardReponse(books, 200);
+            context.setAttribute("books", books);
             gson.toJson(res, response.getWriter());
         } catch (Exception ex) {
             dashboardPostResponse = new ExceptionResponse((ex.getLocalizedMessage()));
